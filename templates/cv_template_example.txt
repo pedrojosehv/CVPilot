@@ -1,0 +1,25 @@
+CURRICULUM VITAE
+
+{{ObjectiveTitle}}
+
+PROFESSIONAL SUMMARY
+{{ProfileSummary}}
+
+KEY ACHIEVEMENTS
+{% for bullet in TopBullets %}
+• {{bullet.content}}
+{% endfor %}
+
+SKILLS
+{{SkillList}}
+
+SOFTWARE & TOOLS
+{{SoftwareList}}
+
+ATS OPTIMIZATION
+{{ATSRecommendations}}
+
+---
+Generated for: {{company}} - {{position}}
+Job ID: {{job_id}}
+Generated at: {{generated_at}}

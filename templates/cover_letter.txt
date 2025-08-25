@@ -1,0 +1,23 @@
+Case 1 – SaaS Accounting (Noddok)
+At GCA I led the development of Noddok, a B2B SaaS for cloud-based accounting. I owned end-to-end product delivery, from user research to engineering handoff, achieving a 20x faster document processing system and $5M impact. By redesigning the billing model and enabling recurring subscriptions, we doubled revenue in the first year. I collaborated daily with design, engineering, and sales to optimize UX and reduce time-on-task by 30%.
+
+Case 2 – Azure Model Training & Reliability (Noddok)
+I spearheaded the improvement of Noddok’s financial document conversion engine by prioritizing the training of Azure models to strengthen reliability in invoice and bank account processing. This reduced manual editing needs and cut conversion errors by 30%, while progressively rolling out advanced fiscal reporting and reconciliation modules. The balance between innovation and operational stability directly improved client adoption and satisfaction.
+
+Case 3 – Billing Model Redesign & Revenue Growth (Noddok)
+By redesigning Noddok’s SaaS billing model, I implemented recurring subscriptions and optimized the payment journey, achieving 100% revenue growth within the first year. This initiative combined business strategy with UX optimization and required close collaboration with engineering and sales teams. The outcome not only strengthened financial sustainability but also delivered a smoother experience for end users.
+
+Case 4 – Onboarding A/B Testing & Retention (Noddok)
+Facing stakeholder disagreements on onboarding strategy, I designed and implemented an A/B test comparing mandatory payment vs. 14-day free trial. Using Google Analytics, we tracked conversion, 30-day retention, and CSAT. Results showed a +15% retention increase with the free trial while maintaining equal conversion rates but reducing churn. Presenting this data-driven decision to stakeholders built consensus and ensured long-term value creation.
+
+Case 5 – Interface Redesign & Efficiency Gains (Noddok)
+I led the redesign of Noddok’s document conversion interface to address customer pain points around navigation, file categorization, and preview/editing tools. Working with a multidisciplinary team, I aligned UX improvements with business goals, ran prototypes, and validated through QA metrics. The new interface shortened operational times by 30%, improved engagement by 25%, and increased customer satisfaction.
+
+Case 6 – Internal Operations (Automation)
+I spearheaded automation in GCA’s internal operations, building an automated proposal generator that increased adoption by 25% in three months. I also designed a ticketing workflow integrated with engineering and support, reaching 95% first-contact resolution. These projects reflect my ability to connect business needs with practical technical solutions, delivering measurable gains in efficiency and adoption.
+
+Case 7 – Mobile App (Compartaxi)
+I led the full lifecycle of Compartaxi, a B2C ride-sharing app launched on Google Play and App Store. I defined user flows, coordinated with developers, and validated through user testing. Within three months of launch, we reduced user-reported errors by 20%. This experience gave me strong foundations in mobile UX, cross-functional collaboration, and launching consumer-facing products from zero to market.
+
+Case 8 – Independent Project (DataPM, AI + Python)
+Independently, I built DataPM, a GenAI pipeline that processes job postings into structured datasets. I designed extraction modules, role/skills normalization, and deduplication logic with Python, GitHub Copilot, and Cursor. This project demonstrates my product mindset applied to AI tools: iterative development, modular design, and direct application to solve a real personal need (job-market intelligence).

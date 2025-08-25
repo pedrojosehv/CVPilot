@@ -1,0 +1,12 @@
+[
+  {
+    "job_id": "test_123",
+    "job_title": "Product Analyst - Data Analytics",
+    "selected_template": "/path/to/template1.docx",
+    "user_rating": 4.5,
+    "auto_selected": true,
+    "selection_score": 0.85,
+    "timestamp": "2025-08-25T18:58:54.164128",
+    "outcome": "success"
+  }
+]

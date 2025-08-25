@@ -1,0 +1,20 @@
+{
+  "generated_at": "2025-08-25T18:58:54.255303",
+  "templates_analyzed": 1,
+  "performance_summary": {
+    "PedroHerrera_AA_GEN_2025.docx": {
+      "success_rate": 0.0,
+      "total_uses": 0,
+      "performance_level": "Poor",
+      "recommendation": "Insufficient data - needs more usage"
+    }
+  },
+  "ranked_templates": [
+    {
+      "rank": 1,
+      "template": "PedroHerrera_AA_GEN_2025.docx",
+      "success_rate": 0.0,
+      "performance_level": "Poor"
+    }
+  ]
+}

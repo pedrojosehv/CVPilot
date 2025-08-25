@@ -1,0 +1,158 @@
+
+🔍 **PROJECT MANAGER SKILLS ANALYSIS REPORT**
+============================================================
+
+📊 **ANALYSIS SUMMARY:**
+   • Total Project Manager jobs analyzed: 26
+   • Skills categories identified: 10
+   • Unique skills found: 78
+
+📈 **SKILLS BY CATEGORY:**
+
+🎯 **PROJECT MANAGEMENT** (8 skills):
+   • project coordination (1 mentions)
+   • project delivery (1 mentions)
+   • project execution (1 mentions)
+   • project planning (1 mentions)
+   • project management (6 mentions)
+   • gestión de proyectos (9 mentions)
+   • project governance (1 mentions)
+   • project manager (17 mentions)
+
+🎯 **METHODOLOGIES** (11 skills):
+   • pmp (4 mentions)
+   • kanban (3 mentions)
+   • ipma (1 mentions)
+   • methodology (2 mentions)
+   • pmi (2 mentions)
+   • lean (1 mentions)
+   • framework (2 mentions)
+   • retrospective (1 mentions)
+   • scrum (6 mentions)
+   • prince2 (3 mentions)
+
+🎯 **LEADERSHIP** (5 skills):
+   • team coordination (1 mentions)
+   • cross-functional (1 mentions)
+   • multidisciplinary (1 mentions)
+   • leadership (2 mentions)
+   • liderazgo (8 mentions)
+
+🎯 **COMMUNICATION** (5 skills):
+   • facilitation (1 mentions)
+   • reporting (3 mentions)
+   • comunicación (10 mentions)
+   • documentation (3 mentions)
+   • communication (6 mentions)
+
+🎯 **TECHNICAL** (6 skills):
+   • it (25 mentions)
+   • engineering (4 mentions)
+   • technical (2 mentions)
+   • software development (1 mentions)
+   • development (8 mentions)
+   • technology (4 mentions)
+
+🎯 **SOFT SKILLS** (7 skills):
+   • self-motivated (1 mentions)
+   • organization (1 mentions)
+   • planning (3 mentions)
+   • time management (3 mentions)
+   • flexible (8 mentions)
+   • prioritization (2 mentions)
+   • team player (1 mentions)
+
+🎯 **TOOLS** (13 skills):
+   • excel (10 mentions)
+   • jira (4 mentions)
+   • word (1 mentions)
+   • teams (3 mentions)
+   • autocad (3 mentions)
+   • dashboard (2 mentions)
+   • crm (1 mentions)
+   • powerpoint (1 mentions)
+   • erp (9 mentions)
+   • office (5 mentions)
+
+🎯 **INDUSTRY SPECIFIC** (11 skills):
+   • logistics (1 mentions)
+   • retail (2 mentions)
+   • construction (2 mentions)
+   • ecommerce (1 mentions)
+   • healthcare (1 mentions)
+   • supply chain (1 mentions)
+   • finance (1 mentions)
+   • energy (1 mentions)
+   • manufacturing (1 mentions)
+   • real estate (2 mentions)
+
+🎯 **ANALYTICAL** (6 skills):
+   • risk management (1 mentions)
+   • process improvement (1 mentions)
+   • analytical (2 mentions)
+   • analysis (1 mentions)
+   • data analysis (1 mentions)
+   • efficiency (1 mentions)
+
+🎯 **BUSINESS** (6 skills):
+   • commercial (1 mentions)
+   • metrics (1 mentions)
+   • budget (1 mentions)
+   • business development (1 mentions)
+   • kpis (1 mentions)
+   • business (7 mentions)
+
+🏆 **TOP 20 MOST FREQUENT SKILLS:**
+   • it: 25 mentions
+   • project manager: 17 mentions
+   • comunicación: 10 mentions
+   • excel: 10 mentions
+   • gestión de proyectos: 9 mentions
+   • erp: 9 mentions
+   • liderazgo: 8 mentions
+   • flexible: 8 mentions
+   • development: 8 mentions
+   • business: 7 mentions
+   • scrum: 6 mentions
+   • project management: 6 mentions
+   • communication: 6 mentions
+   • office: 5 mentions
+   • pmp: 4 mentions
+   • technology: 4 mentions
+   • agile: 4 mentions
+   • jira: 4 mentions
+   • engineering: 4 mentions
+   • prince2: 3 mentions
+
+
+💡 **SCHEMA IMPROVEMENT SUGGESTIONS**
+==================================================
+
+🎯 **HIGH-PRIORITY SKILLS TO ADD:**
+   • it (25 mentions)
+   • project manager (17 mentions)
+   • comunicación (10 mentions)
+   • excel (10 mentions)
+   • gestión de proyectos (9 mentions)
+   • erp (9 mentions)
+   • liderazgo (8 mentions)
+   • flexible (8 mentions)
+   • development (8 mentions)
+   • business (7 mentions)
+   • scrum (6 mentions)
+   • project management (6 mentions)
+   • communication (6 mentions)
+   • office (5 mentions)
+   • pmp (4 mentions)
+
+📋 **CATEGORY EXPANSIONS:**
+   • project_management: Expand with 37 identified skills
+   • methodologies: Expand with 29 identified skills
+   • leadership: Expand with 13 identified skills
+   • communication: Expand with 23 identified skills
+   • technical: Expand with 44 identified skills
+   • soft_skills: Expand with 19 identified skills
+   • tools: Expand with 42 identified skills
+   • industry_specific: Expand with 14 identified skills
+   • analytical: Expand with 7 identified skills
+   • business: Expand with 12 identified skills

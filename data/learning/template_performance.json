@@ -1,0 +1,16 @@
+{
+  "/path/to/template1.docx": {
+    "template_path": "/path/to/template1.docx",
+    "total_selections": 1,
+    "user_ratings": [
+      4.5
+    ],
+    "success_rate": 1.0,
+    "avg_user_rating": 4.5,
+    "role_performance": {
+      "PA": 0.5
+    },
+    "skill_performance": {},
+    "last_used": "2025-08-25T18:58:54.164128"
+  }
+}

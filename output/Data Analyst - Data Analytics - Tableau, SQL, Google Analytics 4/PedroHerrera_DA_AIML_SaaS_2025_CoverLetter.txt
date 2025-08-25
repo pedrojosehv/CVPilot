@@ -1,0 +1,14 @@
+Dear Fourvenues Recruitment Team,
+
+I'm a data-driven product analyst with proven success in optimizing marketing ROI. My expertise lies in defining and tracking KPIs, building insightful dashboards (Tableau, Looker Studio), and communicating actionable recommendations.  I excel at funnel analysis and improving user acquisition.
+
+In a previous role, I integrated GA4 and SQL data to identify bottlenecks in the user acquisition funnel. By implementing targeted improvements based on my analysis and visualized in Tableau, I achieved a 15% increase in conversion rates.  This was accomplished through data-driven decision making and clear communication of insights to stakeholders.
+
+I offer a unique blend of analytical skills and communication expertise, enabling data-backed strategic decisions that directly improve performance. My proficiency in SQL, GA4, Tableau and Looker Studio makes me a strong candidate to contribute immediately to Fourvenues.
+
+Thank you for your time and consideration.
+
+Sincerely,
+Pedro Herrera
+pjherrera23@gmail.com
++34 655 77 35 19
