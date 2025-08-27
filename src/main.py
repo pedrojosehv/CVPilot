@@ -6,6 +6,7 @@ CV Automation Tool for job-specific customization
 
 import click
 import logging
+import os
 from pathlib import Path
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -23,6 +24,8 @@ from .utils.logger import setup_logger
 from .utils.models import Replacements, ReplacementBlock
 from .utils.naming_utils import NamingUtils
 from .utils.template_selector import TemplateSelector
+from .utils.user_profile_manager import UserProfileManager
+from .utils.auto_llm_selector import AutoLLMSelector
 
 def _save_text_without_overwrite(file_path: Path, content: str) -> Path:
     """CRITICAL SAFETY RULE: NEVER OVERWRITE EXISTING TEXT FILES
@@ -127,7 +130,8 @@ console = Console()
 @click.option('--cover-letter-only', is_flag=True, help='Generate only cover letter')
 @click.option('--both', is_flag=True, default=True, help='Generate both CV and cover letter (default)')
 @click.option('--sequential', is_flag=True, default=True, help='Generate CV and cover letter sequentially (default)')
-def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run, verbose, cv_only, cover_letter_only, both, sequential):
+@click.option('--auto-select-llm', is_flag=True, help='Automatically select the best available LLM')
+def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run, verbose, cv_only, cover_letter_only, both, sequential, auto_select_llm=False):
     """
     CVPilot - Generate customized CV based on job description
     """
@@ -137,7 +141,49 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
     
     # Load configuration
     config = Config()
-    
+
+    # Auto-select best LLM if requested or if current model seems suboptimal
+    if auto_select_llm or _should_auto_select_llm(config):
+        console.print("[blue]🤖 Running automatic LLM selection...[/blue]")
+        try:
+            selector = AutoLLMSelector(job_id, verbose)
+            selection_result = selector.auto_select_best_llm()
+            console.print(f"[green]✅ Auto-selected: {selection_result.best_provider.upper()} - {selection_result.best_model}[/green]")
+
+            # Reload config with new selection
+            config = Config()
+        except Exception as e:
+            console.print(f"[yellow]⚠️ Auto-selection failed: {e}[/yellow]")
+            console.print("[yellow]Continuing with current configuration...[/yellow]")
+
+    # Initialize User Profile Manager - ALWAYS LOAD AND REFRESH USER DATA
+    console.print("[blue]👤 Initializing user profile system...[/blue]")
+    profile_manager = UserProfileManager()
+
+    # ALWAYS extract fresh user information from templates (MANDATORY)
+    console.print("[blue]🔄 Refreshing user profile data from templates...[/blue]")
+    if config.templates_path.exists():
+        templates_found = 0
+        for template_file in config.templates_path.glob("*.docx"):
+            console.print(f"[blue]📊 Extracting profile data from: {template_file.name}[/blue]")
+            profile_manager.extract_from_cv_template(str(template_file))
+            templates_found += 1
+
+        if templates_found == 0:
+            console.print("[yellow]⚠️ No CV templates found for profile extraction[/yellow]")
+        else:
+            console.print(f"[green]✅ Profile extracted from {templates_found} template(s)[/green]")
+    else:
+        console.print("[red]❌ Templates directory not found[/red]")
+
+    # Display profile summary for verification
+    profile_summary = profile_manager.get_profile_summary()
+    console.print(f"[cyan]📈 Profile Status: {profile_summary['experience_years']} years exp, {len(profile_summary['top_skills'])} skills, {len(profile_summary['recent_experience'])} recent roles[/cyan]")
+
+    # Save profile to ensure persistence
+    profile_manager.save_profile()
+    console.print("[green]💾 User profile saved and ready[/green]")
+
     # Create output directory
     output_path = Path(output_dir)
     output_path.mkdir(exist_ok=True)
@@ -145,59 +191,66 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
     console.print(f"[bold blue]CVPilot[/bold blue] - Processing job ID: {job_id}")
     console.print(f"Profile type: {profile_type}")
     console.print(f"Dry run: {dry_run}")
-    
+
     try:
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
             console=console
         ) as progress:
-            
-            # Step 1: Ingest job data
-            task1 = progress.add_task("Loading job data...", total=None)
-            
-            # Try manual loader first (for PowerBI exports)
+
+            # Step 1: Ingest job data - ONLY FROM MANUAL_EXPORT.CSV
+            task1 = progress.add_task("Loading job data from manual_export.csv...", total=None)
+
+            # ONLY search in manual_export.csv as specified by user
             manual_loader = ManualLoader(config.manual_exports_path)
             job_data = manual_loader.load_job(job_id)
-            
-            # If not found in manual exports, try DataPM loader
+
+            # NO DataPM loader - only manual_export.csv as per user instructions
             if not job_data:
-                job_loader = JobLoader(config.data_path)
-                job_data = job_loader.load_job(job_id)
-            
-            progress.update(task1, completed=True)
-            
-            if not job_data:
-                console.print(f"[red]Error: Job ID {job_id} not found[/red]")
+                console.print(f"[red]Error: Job ID {job_id} not found in manual_export.csv[/red]")
+                console.print(f"[yellow]Available jobs in manual_export.csv: {manual_loader.get_job_count()}[/yellow]")
                 return 1
-            
-            # Step 2: Match profile
-            task2 = progress.add_task("Matching profile...", total=None)
-            matcher = ProfileMatcher(config.profiles_path)
-            match_result = matcher.match_job_to_profile(job_data, profile_type)
+
+            progress.update(task1, completed=True)
+
+            # Step 2: Analyze existing outputs and select best template
+            task2 = progress.add_task("Analyzing existing outputs and selecting best template...", total=None)
+
+            # Always analyze existing outputs to select best template
+            console.print("[blue]🔍 Analyzing existing CV outputs for intelligent template selection...[/blue]")
+            template_selector = TemplateSelector(output_dir)
+            best_template = template_selector.find_best_template(job_data, profile_type)
+
+            if best_template:
+                selected_template_path = str(best_template.file_path)
+                console.print(f"[green]✅ Best template selected: {best_template.file_path.name}[/green]")
+                console.print(f"[green]   Match Score: {best_template.score:.2f} | Reasons: {', '.join(best_template.match_reasons)}[/green]")
+            else:
+                console.print("[yellow]⚠️ No existing outputs found, using default template[/yellow]")
+                selected_template_path = config.default_template_path
+
+            # Use selected template (from analysis or default)
+            if template_path:
+                selected_template_path = template_path
+                console.print(f"[blue]Using specified template: {template_path}[/blue]")
+
             progress.update(task2, completed=True)
 
-            # Step 2.5: Auto-select template if requested
-            selected_template_path = template_path
-            if auto_template or (not template_path):
-                console.print("[blue]🔍 Searching for best template from existing CVs...[/blue]")
-                template_selector = TemplateSelector(output_dir)
-                best_template = template_selector.find_best_template(job_data, profile_type)
+            # Step 3: Calculate fit score compared to selected template
+            task3 = progress.add_task("Calculating fit score compared to selected template...", total=None)
+            matcher = ProfileMatcher(config.profiles_path)
+            match_result = matcher.match_job_to_profile(job_data, profile_type)
+            console.print(f"[green]📊 Fit Score: {match_result.fit_score:.3f} (compared to selected template)[/green]")
+            progress.update(task3, completed=True)
 
-                if best_template:
-                    selected_template_path = str(best_template.file_path)
-                    console.print(f"[green]✅ Auto-selected template: {best_template.file_path.name}[/green]")
-                    console.print(f"[green]   Score: {best_template.score:.2f} | Reasons: {', '.join(best_template.match_reasons)}[/green]")
-                else:
-                    console.print("[yellow]⚠️ No suitable template found, using default template[/yellow]")
-                    selected_template_path = config.default_template_path
-
-            # Step 3: Generate content
-            task3 = progress.add_task("Generating content...", total=None)
+            # Step 4: Generate content
+            task4 = progress.add_task("Generating content...", total=None)
             generator = ContentGenerator(
-                config.llm_config, 
+                config.llm_config,
                 str(config.datapm_path),
-                str(config.templates_path)
+                str(config.templates_path),
+                user_profile_manager=profile_manager
             )
             
             # Determine what to generate based on flags FIRST
@@ -218,13 +271,13 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
                     console.print("[yellow]⚠️ Multi-template processor not available, falling back to standard generation...[/yellow]")
                     replacements = generator.generate_replacements(job_data, match_result)
 
-                progress.update(task3, completed=True)
+                progress.update(task4, completed=True)
 
-                # Step 4: Validate content
-                task4 = progress.add_task("Validating content...", total=None)
+                # Step 5: Validate content
+                task5 = progress.add_task("Validating content...", total=None)
                 validator = ContentValidator()
                 validation_result = validator.validate_replacements(replacements)
-                progress.update(task4, completed=True)
+                progress.update(task5, completed=True)
 
                 if not validation_result.is_valid:
                     console.print(f"[red]Validation failed: {validation_result.errors}[/red]")
@@ -249,8 +302,8 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
                         ReplacementBlock(placeholder="TopBullet3", content="", confidence=1.0)
                     ]
                 )
-                progress.update(task3, completed=True)
-                # task4 is not created in cover-letter-only mode, so no need to update it
+                progress.update(task4, completed=True)
+                # task5 is not created in cover-letter-only mode, so no need to update it
             
             # Configure sequential execution by default
             if sequential and generate_cv and generate_cover_letter:
@@ -258,9 +311,9 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
             
             output_files = []
             
-            # Step 5: Generate CV if requested
+            # Step 6: Generate CV if requested
             if generate_cv:
-                task5 = progress.add_task("Processing CV template...", total=None)
+                task6 = progress.add_task("Processing CV template...", total=None)
                 processor = DocxProcessor()
                 
                 # Use selected template (already handled by auto-selection logic)
@@ -341,6 +394,55 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
                     'improvement': 0.0
                 }
             
+            # Record successful summary for learning system
+            if generate_cv and final_fit_analysis['improvement'] >= 0.05:  # Only record significantly successful summaries
+                try:
+                    from .utils.template_learning_system import TemplateLearningSystem
+                    learning_system = TemplateLearningSystem()
+
+                    summary_text = replacements.profile_summary.content
+                    fit_improvement = final_fit_analysis['improvement']
+
+                    learning_system.record_successful_summary(
+                        summary_text=summary_text,
+                        job_data=job_data,
+                        fit_score_improvement=fit_improvement
+                    )
+
+                    logger.info(f"💡 Recorded successful summary for learning (improvement: {fit_improvement:.3f})")
+                except Exception as e:
+                    logger.warning(f"Failed to record successful summary: {e}")
+
+            # Learn from this interaction to improve future generations
+            console.print("[blue]🧠 Learning from this interaction...[/blue]")
+            try:
+                # Create a processing result object for learning
+                from .utils.models import ProcessingResult
+                processing_result = ProcessingResult(
+                    job_id=job_id,
+                    output_file=str(output_files[0]) if output_files else "",
+                    fit_score=final_fit_analysis['final_fit_score'],
+                    processing_time=0.0,  # Could be tracked better in future
+                    replacements=replacements,
+                    validation_result=None,  # Could be added later
+                    success=True
+                )
+
+                # Learn from this interaction
+                profile_manager.learn_from_interaction(job_data, processing_result)
+
+                # Get personalized suggestions for next time
+                suggestions = profile_manager.get_personalized_content_suggestions(job_data)
+                if suggestions['skill_match_score'] > 0.5:
+                    console.print(f"[green]💡 Profile learning: High skill match ({suggestions['skill_match_score']:.1%})[/green]")
+                else:
+                    console.print(f"[yellow]💡 Profile learning: Consider adding {len(job_data.skills) - len(suggestions.get('recommended_skills', []))} more skills[/yellow]")
+
+                logger.info("🧠 Successfully learned from interaction and updated user profile")
+
+            except Exception as e:
+                logger.warning(f"Failed to learn from interaction: {e}")
+
             # Log results
             logger.info(f"Job {job_id} processed successfully")
             logger.info(f"Initial fit score: {match_result.fit_score:.3f}")
@@ -394,6 +496,36 @@ def main(job_id, profile_type, template_path, auto_template, output_dir, dry_run
         logger.error(f"Error processing job {job_id}: {str(e)}")
         console.print(f"[red]Error: {str(e)}[/red]")
         return 1
+
+def _should_auto_select_llm(config) -> bool:
+    """
+    Determine if automatic LLM selection should be triggered
+
+    Returns True if:
+    - No LLM provider is configured
+    - Current model is not a modern model (like gpt-4o, claude-3-5-sonnet, etc.)
+    - Environment suggests this is first run
+    """
+
+    # Check if no provider is configured
+    if not os.getenv("LLM_PROVIDER"):
+        return True
+
+    # Check if current model is outdated
+    current_model = os.getenv("LLM_MODEL", "").lower()
+    outdated_models = [
+        "gpt-4", "gpt-3.5", "claude-3", "claude-2", "gemini-pro", "gemini-1.5",
+        "text-davinci", "text-curie", "text-babbage", "text-ada"
+    ]
+
+    if any(outdated in current_model for outdated in outdated_models):
+        return True
+
+    # Check if this looks like a default/basic configuration
+    if current_model in ["gpt-4", "claude-3-haiku", "gemini-pro", "gemini-1.5-pro", "gemini-1.5-flash"]:
+        return True
+
+    return False
 
 if __name__ == "__main__":
     main()

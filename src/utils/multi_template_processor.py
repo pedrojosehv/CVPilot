@@ -357,8 +357,8 @@ class MultiTemplateProcessor(LoggerMixin):
         if optimal_content['software']:
             summary += f"Proficient in {', '.join(optimal_content['software'][:3])}. "
         
-        # Ensure summary is within specified length limit (550 characters max for quality)
-        if len(summary) > 550:
-            summary = summary[:547] + "..."
+        # Ensure summary is within specified length limit (450 characters max - strict limit)
+        if len(summary) > 450:
+            summary = summary[:447] + "..."
         
         return summary

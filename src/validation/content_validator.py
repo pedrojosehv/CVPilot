@@ -20,8 +20,9 @@ class ContentValidator(LoggerMixin):
             "lorem ipsum", "sample"  # Removed "template", "example" and "demo" as they're too restrictive
         ]
         
-        # Validation limits
-        self.max_summary_length = 550  # Maximum 550 characters for summary (quality over strict limits)
+        # Validation limits - aligned with content generator
+        self.max_summary_length = 550  # Maximum 550 characters for comprehensive summaries (with buffer)
+        self.min_summary_length = 350  # Minimum 350 characters for substantial summaries
         self.max_bullet_length = 200
         self.max_skills_count = 15
         self.max_software_count = 10
@@ -86,26 +87,23 @@ class ContentValidator(LoggerMixin):
         errors = []
         warnings = []
         
-        # Check length (characters, not words) and truncate if needed
+        # Check length (characters, not words) - STRICT LIMIT ENFORCEMENT
         char_count = len(summary.content)
         if char_count > self.max_summary_length:
-            # Truncate the content to max length
-            truncated_content = summary.content[:self.max_summary_length - 3] + "..."
-            summary.content = truncated_content
-            self.logger.warning(f"Summary truncated from {char_count} to {self.max_summary_length} characters")
-
-            # Add warning instead of error
-            warnings.append(ValidationError(
+            # STRICT POLICY: Reject summaries that exceed the limit (no truncation allowed)
+            errors.append(ValidationError(
                 field="ProfileSummary",
-                message=f"Summary was truncated from {char_count} to {self.max_summary_length} chars",
-                severity="warning"
+                message=f"Summary exceeds maximum length: {char_count}/{self.max_summary_length} characters (regenerate with proper length)",
+                severity="error"
             ))
-        elif char_count < 100:  # Minimum reasonable length in characters
-            warnings.append(ValidationError(
+            self.logger.error(f"Summary too long: {char_count} chars (max: {self.max_summary_length}) - regeneration required")
+        elif char_count < self.min_summary_length:  # Minimum substantial length required
+            errors.append(ValidationError(
                 field="ProfileSummary",
-                message=f"Summary too short: {char_count} chars (min 100 recommended)",
-                severity="warning"
+                message=f"Summary too short: {char_count}/{self.min_summary_length} chars (regenerate with substantial content)",
+                severity="error"
             ))
+            self.logger.error(f"Summary too short: {char_count} chars (min: {self.min_summary_length}) - regeneration required")
         
         # Check for forbidden tokens
         forbidden_found = self._check_forbidden_tokens(summary.content)

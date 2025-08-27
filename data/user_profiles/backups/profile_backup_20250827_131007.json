@@ -1,0 +1,159 @@
+{
+  "user_id": "user_1756291289",
+  "created_at": "2025-08-27T12:41:29.542060",
+  "updated_at": "2025-08-27T13:08:26.469721",
+  "contact": {
+    "name": "PRODUCT ANALYST",
+    "email": null,
+    "phone": null,
+    "location": null,
+    "linkedin": null,
+    "portfolio": null
+  },
+  "work_experience": [
+    {
+      "company": "Unknown Company",
+      "position": "Operations Specialist",
+      "start_date": "11/2023",
+      "end_date": null,
+      "location": null,
+      "achievements": [],
+      "technologies": [],
+      "is_current": true,
+      "industry": null
+    },
+    {
+      "company": "Unknown Company",
+      "position": "Product Analyst",
+      "start_date": "08/2022",
+      "end_date": "11/2023",
+      "location": null,
+      "achievements": [],
+      "technologies": [],
+      "is_current": false,
+      "industry": null
+    },
+    {
+      "company": "Unknown Company",
+      "position": "Quality Assurance Analyst",
+      "start_date": "08/2020",
+      "end_date": "11/2021",
+      "location": null,
+      "achievements": [],
+      "technologies": [],
+      "is_current": false,
+      "industry": null
+    },
+    {
+      "company": "Unknown Company",
+      "position": "Product Manager",
+      "start_date": "11/2019",
+      "end_date": "08/2020",
+      "location": null,
+      "achievements": [],
+      "technologies": [],
+      "is_current": false,
+      "industry": null
+    }
+  ],
+  "education": [],
+  "skills": [
+    {
+      "name": "Jira",
+      "category": "tool",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Python",
+      "category": "technical",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Agile",
+      "category": "soft",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Power Bi",
+      "category": "tool",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Excel",
+      "category": "tool",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Sql",
+      "category": "technical",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Confluence",
+      "category": "tool",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    },
+    {
+      "name": "Tableau",
+      "category": "tool",
+      "proficiency_level": 3,
+      "years_experience": null,
+      "last_used": null,
+      "confidence_score": 0.7
+    }
+  ],
+  "preferences": {
+    "writing_style": {
+      "tone": "professional",
+      "detail_level": "concise",
+      "language_complexity": "intermediate",
+      "include_metrics": true,
+      "avoid_generic_phrases": true,
+      "preferred_industries": []
+    },
+    "preferred_template_formats": [
+      "modern",
+      "professional"
+    ],
+    "industries_of_interest": [],
+    "role_progression_goals": [],
+    "salary_expectations": null,
+    "remote_work_preference": "flexible",
+    "travel_willingness": "moderate"
+  },
+  "industry_preferences": [],
+  "interaction_history": [],
+  "learning_metrics": {
+    "total_interactions": 0,
+    "successful_predictions": 0,
+    "user_satisfaction_score": 0.0,
+    "average_processing_time": 0.0,
+    "template_success_rate": {},
+    "content_reuse_rate": 0.0,
+    "average_fit_score_improvement": 0.0
+  },
+  "template_learning_enabled": true,
+  "auto_extract_from_cvs": true,
+  "feedback_collection_enabled": true
+}

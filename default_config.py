@@ -77,3 +77,4 @@ if __name__ == "__main__":
         print(f"🏷️  Títulos reemplazables: {len(get_replaceable_titles())}")
     else:
         print("\n⚠️  Revisar configuración del sistema")
+

@@ -111,3 +111,4 @@ if __name__ == "__main__":
     print(f"   Formato preservado: {TEMPLATE_CONFIG['format_preserved']}")
     print(f"   Tabs requeridos: {TEMPLATE_CONFIG['tabs_count']}")
     print(f"   Validación activada: {VALIDATION_CONFIG['check_format']}")
+

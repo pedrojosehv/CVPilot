@@ -100,7 +100,15 @@ class CoverLetterGenerator(LoggerMixin):
         elif self.llm_provider == 'gemini':
             import google.generativeai as genai
             genai.configure(api_key=api_key)
-            self.client = genai.GenerativeModel(self.config.model)
+
+            # Handle Gemini model name conversion (same as content_generator.py)
+            model_name = self.config.model
+            if model_name == "gemini-2-0-flash-exp":
+                model_name = "gemini-2.0-flash-exp"
+            elif model_name == "gemini-1.5-flash":
+                model_name = "gemini-1.5-flash"
+
+            self.client = genai.GenerativeModel(model_name)
 
     def generate_cover_letter(self, job_data: JobData, match_result: MatchResult,
                             cv_content: Dict[str, str]) -> str:

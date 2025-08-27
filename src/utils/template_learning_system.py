@@ -30,6 +30,23 @@ class SelectionHistory:
             self.timestamp = datetime.now().isoformat()
 
 @dataclass
+class SuccessfulSummary:
+    """Tracks successful summaries for reuse"""
+    summary_text: str
+    job_title: str
+    industry: str
+    role_type: str
+    success_score: float = 1.0  # Based on fit score improvement
+    usage_count: int = 0
+    created_at: str = ""
+    last_used: Optional[str] = None
+    fit_score_improvement: float = 0.0
+
+    def __post_init__(self):
+        if not self.created_at:
+            self.created_at = datetime.now().isoformat()
+
+@dataclass
 class TemplatePerformance:
     """Tracks performance metrics for each template"""
     template_path: str
@@ -57,16 +74,19 @@ class TemplateLearningSystem:
         self.data_dir.mkdir(exist_ok=True)
         self.history_file = self.data_dir / "selection_history.json"
         self.performance_file = self.data_dir / "template_performance.json"
+        self.successful_summaries_file = self.data_dir / "successful_summaries.json"
         self.logger = logging.getLogger(__name__)
 
         # Learning parameters
         self.min_samples_for_learning = 3  # Minimum selections before learning kicks in
         self.decay_factor = 0.95  # How much older selections are weighted
         self.confidence_threshold = 0.7  # Minimum confidence for ML suggestions
+        self.min_fit_improvement = 0.05  # Minimum fit score improvement to consider successful
 
         # Load existing data
         self.selection_history = self._load_selection_history()
         self.template_performance = self._load_template_performance()
+        self.successful_summaries = self._load_successful_summaries()
 
     def record_selection(self, job_data: Dict[str, Any], selected_template: str,
                         auto_selected: bool = False, selection_score: float = 0.0,
@@ -286,3 +306,179 @@ class TemplateLearningSystem:
             'average_rating': round(avg_rating, 2) if avg_rating > 0 else 0,
             'learning_active': total_selections >= self.min_samples_for_learning
         }
+
+    def record_successful_summary(self, summary_text: str, job_data: Dict[str, Any],
+                                 fit_score_improvement: float, role_type: str = None):
+        """Record a successful summary for future reuse"""
+
+        if fit_score_improvement < self.min_fit_improvement:
+            return  # Only record significantly successful summaries
+
+        if not role_type:
+            role_type = self._extract_role_from_title(job_data.get('job_title_original', ''))
+
+        industry = self._infer_industry_from_job_data(job_data)
+
+        successful_summary = SuccessfulSummary(
+            summary_text=summary_text,
+            job_title=job_data.get('job_title_original', ''),
+            industry=industry,
+            role_type=role_type,
+            success_score=fit_score_improvement,
+            fit_score_improvement=fit_score_improvement
+        )
+
+        self.successful_summaries.append(successful_summary)
+        self._save_successful_summaries()
+
+        self.logger.info(f"💡 Recorded successful summary for {role_type} role in {industry} industry")
+
+    def find_similar_successful_summary(self, job_data: Dict[str, Any], min_similarity: float = 0.6) -> Optional[str]:
+        """Find a similar successful summary to reuse"""
+
+        if len(self.successful_summaries) < self.min_samples_for_learning:
+            return None
+
+        target_role = self._extract_role_from_title(job_data.get('job_title_original', ''))
+        target_industry = self._infer_industry_from_job_data(job_data)
+        target_skills = set(job_data.get('skills', []))
+        target_software = set(job_data.get('software', []))
+
+        best_match = None
+        best_score = 0.0
+
+        for summary in self.successful_summaries:
+            # Calculate similarity score
+            similarity = self._calculate_summary_similarity(
+                summary, target_role, target_industry, target_skills, target_software
+            )
+
+            if similarity > min_similarity and similarity > best_score:
+                best_score = similarity
+                best_match = summary.summary_text
+
+                # Update usage statistics
+                summary.usage_count += 1
+                summary.last_used = datetime.now().isoformat()
+
+        if best_match:
+            self._save_successful_summaries()
+            self.logger.info(f"🔄 Reusing successful summary (similarity: {best_score:.2f})")
+
+        return best_match
+
+    def _calculate_summary_similarity(self, summary: SuccessfulSummary, target_role: str,
+                                    target_industry: str, target_skills: set, target_software: set) -> float:
+        """Calculate how similar a stored summary is to the current job requirements"""
+
+        score = 0.0
+        total_weight = 0.0
+
+        # Role match (40% weight)
+        if summary.role_type == target_role:
+            score += 0.4
+        elif summary.role_type != 'UNKNOWN':
+            score += 0.1  # Partial credit for related roles
+        total_weight += 0.4
+
+        # Industry match (30% weight)
+        if summary.industry == target_industry:
+            score += 0.3
+        total_weight += 0.3
+
+        # Skills overlap (20% weight)
+        summary_skills = set(summary.summary_text.lower().split())
+        skill_overlap = len(target_skills.intersection(summary_skills)) / max(len(target_skills), 1)
+        score += skill_overlap * 0.2
+        total_weight += 0.2
+
+        # Software/tools overlap (10% weight)
+        summary_software = set(summary.summary_text.lower().split())
+        software_overlap = len(target_software.intersection(summary_software)) / max(len(target_software), 1)
+        score += software_overlap * 0.1
+        total_weight += 0.1
+
+        # Age penalty (older summaries get slightly lower scores)
+        days_old = (datetime.now() - datetime.fromisoformat(summary.created_at)).days
+        age_penalty = min(days_old / 365, 0.2)  # Max 20% penalty for very old summaries
+        score *= (1 - age_penalty)
+
+        # Success score bonus
+        success_bonus = min(summary.success_score, 0.3)  # Max 30% bonus
+        score *= (1 + success_bonus)
+
+        return score / total_weight if total_weight > 0 else 0.0
+
+    def _infer_industry_from_job_data(self, job_data: Dict[str, Any]) -> str:
+        """Infer industry from job data"""
+        company = job_data.get('company', '').lower()
+        title = job_data.get('job_title_original', '').lower()
+        skills = ' '.join(job_data.get('skills', [])).lower()
+
+        text_to_analyze = f"{company} {title} {skills}"
+
+        industry_keywords = {
+            "Technology/SaaS": ["saas", "software", "cloud", "digital", "platform", "api", "web", "mobile", "tech"],
+            "Manufacturing": ["manufacturing", "production", "industrial", "supply chain", "factory"],
+            "Financial Services": ["financial", "fintech", "banking", "payment", "trading", "investment"],
+            "Healthcare": ["healthcare", "medical", "clinical", "patient", "pharma", "biotech"],
+            "Retail/E-commerce": ["retail", "ecommerce", "customer", "sales", "commerce"],
+            "Consulting": ["consulting", "advisory", "strategy", "transformation"],
+            "Business Operations": ["operations", "business", "management", "process"]
+        }
+
+        for industry, keywords in industry_keywords.items():
+            if any(keyword in text_to_analyze for keyword in keywords):
+                return industry
+
+        return "Business Operations"  # Default
+
+    def _load_successful_summaries(self) -> List[SuccessfulSummary]:
+        """Load successful summaries from file"""
+        if not self.successful_summaries_file.exists():
+            return []
+
+        try:
+            with open(self.successful_summaries_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return [SuccessfulSummary(**item) for item in data]
+        except Exception as e:
+            self.logger.error(f"Error loading successful summaries: {e}")
+            return []
+
+    def _save_successful_summaries(self):
+        """Save successful summaries to file"""
+        try:
+            with open(self.successful_summaries_file, 'w', encoding='utf-8') as f:
+                json.dump([asdict(item) for item in self.successful_summaries],
+                         f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            self.logger.error(f"Error saving successful summaries: {e}")
+
+    def get_learning_statistics(self) -> Dict[str, Any]:
+        """Get comprehensive learning statistics"""
+        base_stats = self.get_statistics()
+
+        summary_stats = {
+            'successful_summaries_count': len(self.successful_summaries),
+            'summaries_by_role': defaultdict(int),
+            'summaries_by_industry': defaultdict(int),
+            'avg_fit_improvement': 0.0,
+            'most_successful_role': None,
+            'most_successful_industry': None
+        }
+
+        if self.successful_summaries:
+            total_improvement = sum(s.fit_score_improvement for s in self.successful_summaries)
+            summary_stats['avg_fit_improvement'] = total_improvement / len(self.successful_summaries)
+
+            for summary in self.successful_summaries:
+                summary_stats['summaries_by_role'][summary.role_type] += 1
+                summary_stats['summaries_by_industry'][summary.industry] += 1
+
+            summary_stats['most_successful_role'] = max(summary_stats['summaries_by_role'],
+                                                      key=summary_stats['summaries_by_role'].get)
+            summary_stats['most_successful_industry'] = max(summary_stats['summaries_by_industry'],
+                                                           key=summary_stats['summaries_by_industry'].get)
+
+        return {**base_stats, **summary_stats}
