@@ -1,0 +1,233 @@
+{
+  "Asistente - Analista - General - Microsoft Office, General Tools\\PedroHerrera_AA_GEN_2025.docx": {
+    "file_path": "Asistente - Analista - General - Microsoft Office, General Tools\\PedroHerrera_AA_GEN_2025.docx",
+    "file_name": "PedroHerrera_AA_GEN_2025.docx",
+    "role_detected": "Unknown",
+    "file_hash": "fb8b3b18248c9f14cadd063a34dff791",
+    "file_size": 26652,
+    "modified_time": "2025-08-23T15:02:00.918811",
+    "created_time": "2025-08-22T16:25:06.033815",
+    "last_synced": "2025-08-28T12:11:16.059032",
+    "sync_status": "synced"
+  },
+  "Business Analyst - General - Jira, Confluence, Excel (advanced)\\PedroHerrera_BA_COLL_SaaS_2025_20250825_193638.docx": {
+    "file_path": "Business Analyst - General - Jira, Confluence, Excel (advanced)\\PedroHerrera_BA_COLL_SaaS_2025_20250825_193638.docx",
+    "file_name": "PedroHerrera_BA_COLL_SaaS_2025_20250825_193638.docx",
+    "role_detected": "Business Analyst",
+    "file_hash": "8c371007833eb911b0cf35214e6df3fc",
+    "file_size": 27962,
+    "modified_time": "2025-08-27T17:54:12.745558",
+    "created_time": "2025-08-25T19:36:38.100772",
+    "last_synced": "2025-08-28T12:11:16.143018",
+    "sync_status": "synced"
+  },
+  "Business Operations - General - Oracle, SQL\\PedroHerrera_BO_COLL_SaaS_2025_20250827_141021.docx": {
+    "file_path": "Business Operations - General - Oracle, SQL\\PedroHerrera_BO_COLL_SaaS_2025_20250827_141021.docx",
+    "file_name": "PedroHerrera_BO_COLL_SaaS_2025_20250827_141021.docx",
+    "role_detected": "Unknown",
+    "file_hash": "3602b12e6e654899404f17c1c2ae8445",
+    "file_size": 28399,
+    "modified_time": "2025-08-27T14:20:10.357775",
+    "created_time": "2025-08-27T14:10:21.914343",
+    "last_synced": "2025-08-28T12:11:16.195508",
+    "sync_status": "synced"
+  },
+  "Data Analyst - Data Analytics - Tableau, SQL, Google Analytics 4\\PedroHerrera_DA_ANAL_SaaS_2025.docx": {
+    "file_path": "Data Analyst - Data Analytics - Tableau, SQL, Google Analytics 4\\PedroHerrera_DA_ANAL_SaaS_2025.docx",
+    "file_name": "PedroHerrera_DA_ANAL_SaaS_2025.docx",
+    "role_detected": "Data Analyst",
+    "file_hash": "861df2005a0a8db1cb05eab4adb54f87",
+    "file_size": 25291,
+    "modified_time": "2025-08-25T16:00:23.734320",
+    "created_time": "2025-08-25T11:22:37.315431",
+    "last_synced": "2025-08-28T12:11:16.244091",
+    "sync_status": "synced"
+  },
+  "data_analytics\\CV_Fourvenues_20250821_113427.docx": {
+    "file_path": "data_analytics\\CV_Fourvenues_20250821_113427.docx",
+    "file_name": "CV_Fourvenues_20250821_113427.docx",
+    "role_detected": "Data Analyst",
+    "file_hash": "91045e1c86199af206a6b6ba49112587",
+    "file_size": 25906,
+    "modified_time": "2025-08-21T11:34:27.497239",
+    "created_time": "2025-08-21T11:34:27.467633",
+    "last_synced": "2025-08-28T12:11:16.296167",
+    "sync_status": "synced"
+  },
+  "Marketing or Growth Specialist -\\New Microsoft Word Document.docx": {
+    "file_path": "Marketing or Growth Specialist -\\New Microsoft Word Document.docx",
+    "file_name": "New Microsoft Word Document.docx",
+    "role_detected": "Unknown",
+    "file_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "file_size": 0,
+    "modified_time": "2024-05-01T17:22:19.324960",
+    "created_time": "2024-05-01T17:22:19.324960",
+    "last_synced": null,
+    "sync_status": "error"
+  },
+  "Marketing or Growth Specialist -\\PE - Carta de Presentación.docx": {
+    "file_path": "Marketing or Growth Specialist -\\PE - Carta de Presentación.docx",
+    "file_name": "PE - Carta de Presentación.docx",
+    "role_detected": "Unknown",
+    "file_hash": "d18c3e3d3f4c8dca6f82fb7cbb74e9fd",
+    "file_size": 147113,
+    "modified_time": "2024-10-08T10:48:56.490237",
+    "created_time": "2024-05-01T17:55:22.583674",
+    "last_synced": "2025-08-28T12:11:16.376598",
+    "sync_status": "synced"
+  },
+  "Product Analyst - General - Jira, Confluence, Tableau\\BSH_PedroHerrera_BA_CL.docx": {
+    "file_path": "Product Analyst - General - Jira, Confluence, Tableau\\BSH_PedroHerrera_BA_CL.docx",
+    "file_name": "BSH_PedroHerrera_BA_CL.docx",
+    "role_detected": "Product Analyst",
+    "file_hash": "38d2c60b430c1c5cfd7e8b42de381f94",
+    "file_size": 25949,
+    "modified_time": "2025-08-28T01:26:46.771304",
+    "created_time": "2025-08-28T01:18:45.575193",
+    "last_synced": "2025-08-28T12:11:16.530344",
+    "sync_status": "synced"
+  },
+  "Product Analyst - General - Jira, Confluence, Tableau\\PedroHerrera_BA_BC_2025.docx": {
+    "file_path": "Product Analyst - General - Jira, Confluence, Tableau\\PedroHerrera_BA_BC_2025.docx",
+    "file_name": "PedroHerrera_BA_BC_2025.docx",
+    "role_detected": "Product Analyst",
+    "file_hash": "d5424180c3268ec0f628c1ae39897dff",
+    "file_size": 27718,
+    "modified_time": "2025-08-28T01:13:20.504196",
+    "created_time": "2025-08-28T00:50:20.047609",
+    "last_synced": "2025-08-28T12:11:16.596011",
+    "sync_status": "synced"
+  },
+  "Product Analyst - General - Jira, Confluence, Tableau\\PedroHerrera_PA_ANAL_SaaS_2025.docx": {
+    "file_path": "Product Analyst - General - Jira, Confluence, Tableau\\PedroHerrera_PA_ANAL_SaaS_2025.docx",
+    "file_name": "PedroHerrera_PA_ANAL_SaaS_2025.docx",
+    "role_detected": "Product Analyst",
+    "file_hash": "1e0427c5400733f43d12764f54ad8285",
+    "file_size": 28309,
+    "modified_time": "2025-08-25T16:13:15.889714",
+    "created_time": "2025-08-25T15:26:44.872341",
+    "last_synced": "2025-08-28T12:11:16.647580",
+    "sync_status": "synced"
+  },
+  "Product Manager - Growth - Tableau, VWO\\PedroHerrera_PM_ANTE_SaaS_2025.docx": {
+    "file_path": "Product Manager - Growth - Tableau, VWO\\PedroHerrera_PM_ANTE_SaaS_2025.docx",
+    "file_name": "PedroHerrera_PM_ANTE_SaaS_2025.docx",
+    "role_detected": "Product Manager",
+    "file_hash": "c94fa384c8e583bcb9183347eee5ce38",
+    "file_size": 28850,
+    "modified_time": "2025-08-21T14:58:14.495991",
+    "created_time": "2025-08-21T13:58:48.323194",
+    "last_synced": "2025-08-28T12:11:16.696898",
+    "sync_status": "synced"
+  },
+  "Product Manager - Strategy - Jira, Confluence, Slack\\PedroHerrera_PM_COLL_SaaS_2025.docx": {
+    "file_path": "Product Manager - Strategy - Jira, Confluence, Slack\\PedroHerrera_PM_COLL_SaaS_2025.docx",
+    "file_name": "PedroHerrera_PM_COLL_SaaS_2025.docx",
+    "role_detected": "Product Manager",
+    "file_hash": "8b50e0c60ea264d65b97334dc49a7a1b",
+    "file_size": 28824,
+    "modified_time": "2025-08-27T23:15:35.901010",
+    "created_time": "2025-08-22T15:55:33.540749",
+    "last_synced": "2025-08-28T12:11:16.735937",
+    "sync_status": "synced"
+  },
+  "Product Owner - Agile - Jira, Figma, Google Analytics\\PedroHerrera_PO_CODE_SaaS_2025.docx": {
+    "file_path": "Product Owner - Agile - Jira, Figma, Google Analytics\\PedroHerrera_PO_CODE_SaaS_2025.docx",
+    "file_name": "PedroHerrera_PO_CODE_SaaS_2025.docx",
+    "role_detected": "Product Owner",
+    "file_hash": "1f478339982d3817e78d32359d2193d8",
+    "file_size": 28734,
+    "modified_time": "2025-08-21T23:40:48.647666",
+    "created_time": "2025-08-21T23:19:35.797132",
+    "last_synced": "2025-08-28T12:11:16.780415",
+    "sync_status": "synced"
+  },
+  "Project Manager - AI ML - Python, Confluence, Jira\\PedroHerrera_PJM_AIML_SaaS_2025.docx": {
+    "file_path": "Project Manager - AI ML - Python, Confluence, Jira\\PedroHerrera_PJM_AIML_SaaS_2025.docx",
+    "file_name": "PedroHerrera_PJM_AIML_SaaS_2025.docx",
+    "role_detected": "Project Manager",
+    "file_hash": "f85a733226674cb058abc7178e9674e6",
+    "file_size": 28560,
+    "modified_time": "2025-08-22T12:40:53.604481",
+    "created_time": "2025-08-22T11:31:33.314444",
+    "last_synced": "2025-08-28T12:11:16.930151",
+    "sync_status": "synced"
+  },
+  "Marketing or Growth Specialist -\\ENG\\PedroHerrera_GS_SaaS_2025.docx": {
+    "file_path": "Marketing or Growth Specialist -\\ENG\\PedroHerrera_GS_SaaS_2025.docx",
+    "file_name": "PedroHerrera_GS_SaaS_2025.docx",
+    "role_detected": "Unknown",
+    "file_hash": "ced9513c711ed362a45c1d71057c8211",
+    "file_size": 27530,
+    "modified_time": "2025-08-27T22:40:03.432683",
+    "created_time": "2024-09-10T13:03:00.429329",
+    "last_synced": "2025-08-28T12:11:17.198402",
+    "sync_status": "synced"
+  },
+  "Marketing or Growth Specialist -\\ENG\\PedroHerrera_PS_SaaS_2025.docx": {
+    "file_path": "Marketing or Growth Specialist -\\ENG\\PedroHerrera_PS_SaaS_2025.docx",
+    "file_name": "PedroHerrera_PS_SaaS_2025.docx",
+    "role_detected": "Unknown",
+    "file_hash": "c1768a83ffa354bec717648494bdc959",
+    "file_size": 27518,
+    "modified_time": "2025-08-27T22:45:12.227557",
+    "created_time": "2025-08-27T22:45:11.057209",
+    "last_synced": "2025-08-28T12:11:17.256453",
+    "sync_status": "synced"
+  },
+  "Marketing or Growth Specialist -\\ESP\\CV Pedro Herrera.docx": {
+    "file_path": "Marketing or Growth Specialist -\\ESP\\CV Pedro Herrera.docx",
+    "file_name": "CV Pedro Herrera.docx",
+    "role_detected": "Unknown",
+    "file_hash": "00294d5d8c1792b7cfa56b9237b8b036",
+    "file_size": 27289,
+    "modified_time": "2025-07-06T21:15:30.520766",
+    "created_time": "2024-05-01T15:12:18.439933",
+    "last_synced": "2025-08-28T12:11:17.409198",
+    "sync_status": "synced"
+  },
+  "Business Analyst - General - Jira, Confluence, Excel (advanced)\\PedroHerrera_BA_ERP_SaaS_2025.docx": {
+    "file_path": "Business Analyst - General - Jira, Confluence, Excel (advanced)\\PedroHerrera_BA_ERP_SaaS_2025.docx",
+    "file_name": "PedroHerrera_BA_ERP_SaaS_2025.docx",
+    "role_detected": "Business Analyst",
+    "file_hash": "7a38b127a796f6bd4630ff9af1893d9f",
+    "file_size": 28098,
+    "modified_time": "2025-08-28T17:26:26.062399",
+    "created_time": "2025-08-28T16:14:53.027973",
+    "last_synced": "2025-09-02T18:51:25.082435",
+    "sync_status": "synced"
+  },
+  "Business Operations - General - Oracle, SQL\\PedroHerrera_BO_COLL_SaaS_2025_20250827_141021 - Copy.docx": {
+    "file_path": "Business Operations - General - Oracle, SQL\\PedroHerrera_BO_COLL_SaaS_2025_20250827_141021 - Copy.docx",
+    "file_name": "PedroHerrera_BO_COLL_SaaS_2025_20250827_141021 - Copy.docx",
+    "role_detected": "Unknown",
+    "file_hash": "e0f7e5aca3a5fdf525c7e2fe85ef7fb4",
+    "file_size": 28379,
+    "modified_time": "2025-08-28T15:58:58.904273",
+    "created_time": "2025-08-28T14:43:40.946392",
+    "last_synced": "2025-08-28T17:10:59.311517",
+    "sync_status": "synced"
+  },
+  "Operations Specialist - General - SQL, CRM (Salesforce), ERP\\PedroHerrera_OS_CRM_SaaS_2025.docx": {
+    "file_path": "Operations Specialist - General - SQL, CRM (Salesforce), ERP\\PedroHerrera_OS_CRM_SaaS_2025.docx",
+    "file_name": "PedroHerrera_OS_CRM_SaaS_2025.docx",
+    "role_detected": "Unknown",
+    "file_hash": "08d4a7c9f773377ffce5a9d7d5c0f0c7",
+    "file_size": 28627,
+    "modified_time": "2025-08-28T13:11:43.082305",
+    "created_time": "2025-08-28T12:38:06.760497",
+    "last_synced": "2025-08-28T17:10:59.405792",
+    "sync_status": "synced"
+  },
+  "Business Analyst - General - Jira, Confluence, Excel (advanced)\\Interview_PH_BA.docx": {
+    "file_path": "Business Analyst - General - Jira, Confluence, Excel (advanced)\\Interview_PH_BA.docx",
+    "file_name": "Interview_PH_BA.docx",
+    "role_detected": "Business Analyst",
+    "file_hash": "a40cd8d03f98bd010ad6d8c8f7043146",
+    "file_size": 860172,
+    "modified_time": "2025-08-31T15:28:19.182145",
+    "created_time": "2025-08-31T15:27:55.302712",
+    "last_synced": "2025-09-02T18:51:25.015686",
+    "sync_status": "synced"
+  }
+}

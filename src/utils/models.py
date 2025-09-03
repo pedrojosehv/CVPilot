@@ -26,6 +26,7 @@ class ScheduleType(str, Enum):
     FREELANCE = "freelance"
     REMOTE = "remote"
     HYBRID = "hybrid"
+    UNKNOWN = "unknown"
 
 class JobData(BaseModel):
     """Job description data from DataPM"""
@@ -69,6 +70,27 @@ class JobData(BaseModel):
                 return 'director'
             elif v_lower in ['intern', 'internship']:
                 return 'intern'
+            else:
+                return 'unknown'
+        return v
+    
+    @validator('schedule_type', pre=True)
+    def normalize_schedule_type(cls, v):
+        """Normalize schedule type values"""
+        if isinstance(v, str):
+            v_lower = v.lower().strip()
+            if v_lower in ['full-time', 'fulltime', 'full time']:
+                return 'full-time'
+            elif v_lower in ['part-time', 'parttime', 'part time']:
+                return 'part-time'
+            elif v_lower in ['contract', 'contractor']:
+                return 'contract'
+            elif v_lower in ['freelance', 'freelancer']:
+                return 'freelance'
+            elif v_lower in ['remote', 'trabajo remoto']:
+                return 'remote'
+            elif v_lower in ['hybrid', 'híbrido']:
+                return 'hybrid'
             else:
                 return 'unknown'
         return v

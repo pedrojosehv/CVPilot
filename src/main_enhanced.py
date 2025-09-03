@@ -167,8 +167,16 @@ def main(job_id, profile_type, output_dir, dry_run, verbose, cv_only, cover_lett
             job_data = JobData(
                 job_id=job_id,
                 job_title_original=complete_job_data['job_title_original'],
+                job_title_short=complete_job_data['job_title_short'],
                 company=complete_job_data['company'],
+                country=complete_job_data['country'],
+                state=complete_job_data.get('state'),
+                city=complete_job_data.get('city'),
+                schedule_type=complete_job_data.get('schedule_type'),
+                experience_years=complete_job_data.get('experience_years'),
+                seniority=complete_job_data.get('seniority'),
                 skills=complete_job_data['skills'],
+                degrees=complete_job_data.get('degrees', []),
                 software=complete_job_data['software']
             )
             
@@ -220,17 +228,27 @@ def main(job_id, profile_type, output_dir, dry_run, verbose, cv_only, cover_lett
             )
 
             if generate_cv:
-                # Generate replacements using enhanced context
-                replacements = generator.generate_replacements_with_enhanced_context(
+                # Generate replacements using standard method
+                # Create a dummy match_result since we're using database-driven selection
+                from src.utils.models import MatchResult, ProfileType
+                match_result = MatchResult(
+                    matched_skills=job_data.skills[:3],  # First 3 skills as matched
+                    fit_score=0.85,  # Default good fit score
+                    confidence=0.9,
+                    gap_list=[],
+                    missing_skills=[],
+                    matched_software=job_data.software[:2] if job_data.software else [],
+                    missing_software=[],
+                    profile_type=ProfileType.PRODUCT_MANAGEMENT  # Default profile type
+                )
+                
+                replacements = generator.generate_replacements(
                     job_data=job_data,
-                    complete_job_data=complete_job_data,
-                    selected_profile=profile_data,
-                    role_context=complete_job_data.get('role_context', ''),
-                    job_description_summary=complete_job_data.get('job_description_summary', '')
+                    match_result=match_result
                 )
                 
                 # Validate content
-                validator = ContentValidator(config)
+                validator = ContentValidator()
                 validation_result = validator.validate_replacements(replacements)
                 
                 if not validation_result.is_valid:
@@ -260,11 +278,12 @@ def main(job_id, profile_type, output_dir, dry_run, verbose, cv_only, cover_lett
                 task6 = progress.add_task("📄 Generating CV document...", total=None)
                 
                 # Use the best available template (could be from selected profile)
-                template_path = config.templates_path / "cv_template_example.docx"
+                template_path = config.templates_path / "PedroHerrera_PA_SaaS_B2B_Remote_2025.docx"
                 
                 # Process CV
-                processor = DocxProcessor(str(template_path))
-                output_file = processor.process_cv_with_replacements(
+                processor = DocxProcessor()
+                output_file = processor.process_template(
+                    template_path,
                     replacements, 
                     output_path,
                     complete_job_data.get('job_title_short', job_data.job_title_original)
@@ -287,12 +306,10 @@ def main(job_id, profile_type, output_dir, dry_run, verbose, cv_only, cover_lett
                 }
                 
                 # Generate with enhanced context
-                cover_letter_content = cover_letter_gen.generate_cover_letter_with_context(
-                    job_data, 
-                    cv_content,
-                    job_description_full=complete_job_data.get('job_description_full', ''),
-                    role_context=complete_job_data.get('role_context', ''),
-                    company_context=complete_job_data.get('company_context', '')
+                cover_letter_content = cover_letter_gen.generate_cover_letter(
+                    job_data,
+                    match_result,
+                    cv_content
                 )
                 
                 # Save cover letter

@@ -70,12 +70,19 @@ class EnhancedDataPMLoader(LoggerMixin):
         
         # 5. Combine all data
         complete_data = {
-            # Basic job data
+            # Basic job data (required fields for JobData model)
             'job_id': job_id,
             'job_title_original': basic_job_data.get('job_title_original', ''),
-            'job_title_short': job_title_short,
+            'job_title_short': basic_job_data.get('job_title_short', job_title_short),
             'company': basic_job_data.get('company', ''),
+            'country': basic_job_data.get('country', 'Unknown'),
+            'state': basic_job_data.get('state'),
+            'city': basic_job_data.get('city'),
+            'schedule_type': basic_job_data.get('schedule_type'),
+            'experience_years': basic_job_data.get('experience_years'),
+            'seniority': basic_job_data.get('seniority'),
             'skills': basic_job_data.get('skills', []),
+            'degrees': basic_job_data.get('degrees', []),
             'software': basic_job_data.get('software', []),
             
             # Enhanced data from scrapped
@@ -112,26 +119,58 @@ class EnhancedDataPMLoader(LoggerMixin):
             # Try manual export first
             manual_export_file = Path("manual_exports/manual_export.csv")
             if manual_export_file.exists():
-                with open(manual_export_file, 'r', encoding='utf-8') as f:
-                    reader = csv.DictReader(f)
-                    for row in reader:
-                        if row.get('job_id') == job_id:
-                            return {
-                                'job_id': job_id,
-                                'job_title_original': row.get('job_title_original', ''),
-                                'company': row.get('company', ''),
-                                'skills': row.get('skills', '').split(',') if row.get('skills') else [],
-                                'software': row.get('software', '').split(',') if row.get('software') else [],
-                                'source': 'manual_export'
-                            }
+                # Try different encodings to handle encoding issues
+                encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
+                
+                for encoding in encodings:
+                    try:
+                        with open(manual_export_file, 'r', encoding=encoding) as f:
+                            reader = csv.DictReader(f, delimiter=';')
+                            for row in reader:
+                                # Handle both string and integer job IDs
+                                row_job_id = row.get('Job ID') or row.get('job_id')
+                                if row_job_id and (str(row_job_id).strip() == str(job_id).strip()):
+                                    # Handle both possible column name formats
+                                    job_title_col = 'Job title (original)' if 'Job title (original)' in row else 'job_title_original'
+                                    company_col = 'Company' if 'Company' in row else 'company'
+                                    skills_col = 'Skills' if 'Skills' in row else 'skills'
+                                    software_col = 'Software' if 'Software' in row else 'software'
+                                    
+                                    return {
+                                        'job_id': job_id,
+                                        'job_title_original': row.get(job_title_col, ''),
+                                        'job_title_short': row.get('Job title (short)', row.get('job_title_short', '')),
+                                        'company': row.get(company_col, ''),
+                                        'country': row.get('Country', row.get('country', 'Unknown')),
+                                        'state': row.get('State', row.get('state', None)),
+                                        'city': row.get('City', row.get('city', None)),
+                                        'schedule_type': row.get('Schedule type', row.get('schedule_type', None)),
+                                        'experience_years': row.get('Experience years', row.get('experience_years', None)),
+                                        'seniority': row.get('Seniority', row.get('seniority', None)),
+                                        'skills': [s.strip() for s in row.get(skills_col, '').split(';')] if row.get(skills_col) else [],
+                                        'degrees': [s.strip() for s in row.get('Degrees', row.get('degrees', '')).split(';')] if row.get('Degrees', row.get('degrees', '')) else [],
+                                        'software': [s.strip() for s in row.get(software_col, '').split(';')] if row.get(software_col) else [],
+                                        'source': 'manual_export'
+                                    }
+                        break  # If successful, exit the encoding loop
+                    except UnicodeDecodeError:
+                        continue  # Try next encoding
             
             # Fallback to empty data
             self.logger.warning(f"⚠️ No basic job data found for ID: {job_id}")
             return {
                 'job_id': job_id,
                 'job_title_original': '',
+                'job_title_short': '',
                 'company': '',
+                'country': 'Unknown',
+                'state': None,
+                'city': None,
+                'schedule_type': None,
+                'experience_years': None,
+                'seniority': None,
                 'skills': [],
+                'degrees': [],
                 'software': [],
                 'source': 'none'
             }
@@ -363,17 +402,26 @@ class EnhancedDataPMLoader(LoggerMixin):
     def _search_skills_in_csv(self, csv_file: Path, job_id: str, basic_data: Dict[str, Any]) -> Dict[str, Any]:
         """Search for skills data in specific CSV file"""
         try:
-            with open(csv_file, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
-                
-                for row in reader:
-                    # Try to match by job_id first
-                    if row.get('job_id') == job_id:
-                        return self._parse_skills_row(row, str(csv_file))
+            # Try different encodings to handle encoding issues
+            encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
+            
+            for encoding in encodings:
+                try:
+                    with open(csv_file, 'r', encoding=encoding) as f:
+                        reader = csv.DictReader(f, delimiter=';')
+                        
+                        for row in reader:
+                            # Try to match by job_id first
+                            if row.get('job_id') == job_id:
+                                return self._parse_skills_row(row, str(csv_file))
+                            
+                            # Try to match by company and title
+                            if self._row_matches_job(row, basic_data):
+                                return self._parse_skills_row(row, str(csv_file))
                     
-                    # Try to match by company and title
-                    if self._row_matches_job(row, basic_data):
-                        return self._parse_skills_row(row, str(csv_file))
+                    return {'source': 'none'}
+                except UnicodeDecodeError:
+                    continue  # Try next encoding
             
             return {'source': 'none'}
             
